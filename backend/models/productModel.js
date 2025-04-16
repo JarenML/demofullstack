@@ -13,20 +13,20 @@ class ProductModel{
         // Retorna el primer producto 
     }
 
-    async createProduct({nombre, precio, descripcion}){
+    async createProduct({nombre, precio, descripcion, cantidad, fecha_compra, cliente_id}){
         const result = await db.query(
-            'INSERT INTO producto (nombre, precio, descripcion) VALUES ($1, $2, $3) RETURNING *',
-            [nombre, precio, descripcion]
+            'INSERT INTO producto (nombre, precio, descripcion, cantidad, fecha_compra, cliente_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
+            [nombre, precio, descripcion, cantidad, fecha_compra, cliente_id]
         );
 
-        return result.rows[0]
+        return result.rows[0];
     }
 
-    async updateProduct(id, {nombre, precio, descripcion}){
+    async updateProduct(id, {nombre, precio, descripcion, cantidad, fecha_compra}){
         const result = await db.query(
             `UPDATE producto SET nombre = $1, precio = $2, 
-            descripcion = $3 WHERE id = $4 RETURNING *`,
-            [nombre, precio, descripcion, id]
+            descripcion = $3, cantidad = $4, fecha_compra = $5 WHERE id = $6 RETURNING *`,
+            [nombre, precio, descripcion, cantidad, fecha_compra, id]
         );
 
         return result.rows[0];

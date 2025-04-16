@@ -29,8 +29,8 @@ class ProductController {
 
     async createProduct(req, res) {
         try{
-            const { nombre, precio, descripcion } = req.body;
-            const newProduct = await productService.addProduct({ nombre, precio, descripcion});
+            const {nombre, precio, descripcion, cantidad, fecha_compra, cliente_id} = req.body;
+            const newProduct = await productService.addProduct({nombre, precio, descripcion, cantidad, fecha_compra, cliente_id});
             res.status(201).json(newProduct);
         }catch (error){
             console.error(error);
@@ -41,8 +41,8 @@ class ProductController {
     async updateProduct(req, res) {
         try{
             const { id } = req.params;
-            const { nombre, precio, descripcion } = req.body;
-            const updatedProduct = await productService.modifyProduct(id, {nombre, precio, descripcion});
+            const {nombre, precio, descripcion, cantidad, fecha_compra} = req.body;
+            const updatedProduct = await productService.modifyProduct(id, {nombre, precio, descripcion, cantidad, fecha_compra});
             res.json(updatedProduct);
         }catch (error) {
             console.error(error);
