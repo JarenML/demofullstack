@@ -8,7 +8,7 @@ class ProductModel{
 
     // funciona para obtener un registro por su ID
     async getProduct(id){
-        const result = await db.query('SELECT * FROM producto WHERE id = $1', [1]);
+        const result = await db.query('SELECT * FROM producto WHERE id = $1', [id]);
         return result.rows[0];
         // Retorna el primer producto 
     }
@@ -25,8 +25,8 @@ class ProductModel{
     async updateProduct(id, {nombre, precio, descripcion}){
         const result = await db.query(
             `UPDATE producto SET nombre = $1, precio = $2, 
-            descripcion = $3 WHERE id = $4 WHERE id = $4 RETURNING *`,
-            [nombre, precio, descripcion]
+            descripcion = $3 WHERE id = $4 RETURNING *`,
+            [nombre, precio, descripcion, id]
         );
 
         return result.rows[0];
