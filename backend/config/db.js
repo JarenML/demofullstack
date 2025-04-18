@@ -6,8 +6,8 @@ class Database {
             user: 'postgres',
             host: 'localhost',
             database: 'ventasdb',
-            password: 'admin',
-            port: 5433
+            password: 'jaren1234',
+            port: 5432
         })
     }
 

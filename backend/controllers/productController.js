@@ -1,4 +1,11 @@
 const productService = require('../services/productService');
+const errorsList = require('../errors')
+
+
+function handleError(res, type='Unknown'){
+    const err = errorsList[type] || errorsList.Unknown;
+    return res.status(err.status).json({code: err.code, message: err.message});
+}
 
 class ProductController {
     async getProducts(req, res){
@@ -7,7 +14,7 @@ class ProductController {
             res.json(products);
         }catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'Error al obtener los productos'});
+            handleError(res, 'DatabaseError');
         }
     }
 
@@ -18,12 +25,12 @@ class ProductController {
             const product = await productService.getProductById(id);
 
             if(!product){
-                return res.status(404).json({ message: 'Producto no encontrado'});
+                return handleError(res, 'NotFound')
             }
             res.json(product);
         }catch(error){
             console.error(error);
-            res.status(500).json({ message: 'Error al obtener el producto'});
+            handleError(res, 'DatabaseError')
         }
     }
 
@@ -34,7 +41,7 @@ class ProductController {
             res.status(201).json(newProduct);
         }catch (error){
             console.error(error);
-            res.status(500).json({message: 'Error al crear el producto'});
+            handleError(res, 'Validation');
         }
     }
 
@@ -46,7 +53,7 @@ class ProductController {
             res.json(updatedProduct);
         }catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'Error al actualizar el producto'});
+            handleError(res, 'DatabaseError');
         }
     }
 
@@ -57,7 +64,7 @@ class ProductController {
             res.sendStatus(204);
         }catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'Error al eliminar el producto'});
+            handleError(res, 'DatabaseError');
         }
 
     }
