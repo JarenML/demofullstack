@@ -1,3 +1,8 @@
+function cargarApp(){
+    cargarProductos();
+    cargarClientesSeleccionables();
+}
+
 function cargarProductos(){
     
     fetch('http://localhost:3000/productos')
@@ -10,8 +15,8 @@ function cargarProductos(){
             li.innerHTML = product.nombre;
             const btnEliminar = document.createElement('button');
             btnEliminar.innerHTML = 'Eliminar';
-            btnEliminar.onclick = (id) => {
-                eliminarProducto(id)
+            btnEliminar.onclick = () => {
+                eliminarProducto(product.id)
             };
                 
             li.appendChild(btnEliminar);
@@ -22,7 +27,25 @@ function cargarProductos(){
     }).catch(err => console.log(err));
 }
 
-cargarProductos();
+function cargarClientesSeleccionables(){
+    const listaDesplegableClientes = document.getElementById('clientes');
+
+    fetch('http://localhost:4000/clientes/')
+    .then(response => response.json())
+    .then(data => {
+        const clientes = data;
+        console.log("clientes: ", clientes);
+        clientes.forEach(cliente => {
+            const optionCl = document.createElement('option');
+            optionCl.innerHTML = cliente.nombre;
+            optionCl.value = cliente.id;
+            listaDesplegableClientes.append(optionCl);
+        });
+    })
+    .catch(err => console.log(err));
+}
+
+
 
 
 const miBtnCrear = document.getElementById('miBtnCrear');
@@ -33,10 +56,16 @@ miBtnCrear.addEventListener('click', (e) => {
     let nombre = document.getElementById('nombre').value;
     let descripcion = document.getElementById('descripcion').value;
     let precio = Number(document.getElementById('precio').value);
+    let cliente_id = Number(document.getElementById('clientes').value);
+    let cantidad = Number(document.getElementById('cantidad').value);
+    let fecha_compra = document.getElementById('fecha_compra').value;
     const data = {
         nombre: nombre,
         descripcion: descripcion,
-        precio: precio
+        precio: precio,
+        cliente_id: cliente_id,
+        cantidad: cantidad,
+        fecha_compra: fecha_compra
     };
 
     const options = {
@@ -53,7 +82,7 @@ miBtnCrear.addEventListener('click', (e) => {
         cargarProductos();
         const lista_productos = document.getElementById('lista-productos');
         lista_productos.innerHTML = "";
-        e.reset();
+        document.getElementById('forma').reset()
     }).catch(err => console.log(err));
 });
 
@@ -63,8 +92,7 @@ function eliminarProducto(id){
         method: 'DELETE'
     };
     fetch(`http://localhost:3000/productos/${id}/`, options)
-    .then(response => response.json())
-    .then(data => {
+    .then(() => {
         const lista_productos = document.getElementById('lista-productos');
         lista_productos.innerHTML = "";
         cargarProductos();

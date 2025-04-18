@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body onload="cargarApp()">
     <h1>Mis productos</h1>
     <ul id="lista-productos">
         
@@ -16,6 +16,11 @@
         <input type="text" placeholder="Ingresa el nombre del producto" id="nombre">
         <input type="text" placeholder="Ingresa la descripcion" id="descripcion">
         <input type="number" placeholder="Ingresa el precio" id="precio">
+        <input type="number" placeholder="Ingresa la cantidad" id="cantidad">
+        <input type="date" placeholder="Ingresa la fecha" id="fecha_compra">
+        <select id="clientes">
+            
+        </select>
         <button id="miBtnCrear">Crear producto</button>
     </form>
     <script src="./js/script.js">
